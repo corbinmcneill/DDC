@@ -2,7 +2,7 @@ require('dotenv').config();
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 
-const TOKEN = process.env.TOKEN;
+const token = process.env.CLIENT_TOKEN;
 
 bot.on("ready", function(){
   console.info(`Logged in as ${bot.user.tag}!`);
@@ -83,4 +83,4 @@ function updateChannel(channel){
 	channel.setName("Hanging Out");
 }
 
-bot.login(TOKEN);
+bot.login(token);

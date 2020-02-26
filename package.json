@@ -9,5 +9,17 @@
   "dependencies": {
     "discord.js": "11.5.1",
     "request": "2.81.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/corbinmcneill/DDC.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/corbinmcneill/DDC/issues"
+  },
+  "homepage": "https://github.com/corbinmcneill/DDC#readme"
 }
