@@ -4,8 +4,6 @@ const bot = new Discord.Client();
 
 const TOKEN = process.env.TOKEN;
 
-bot.login(TOKEN);
-
 bot.on("ready", function(){
   console.info(`Logged in as ${bot.user.tag}!`);
 });
@@ -84,3 +82,5 @@ function updateChannel(channel){
 
 	channel.setName("Hanging Out");
 }
+
+bot.login(TOKEN);
