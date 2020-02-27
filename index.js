@@ -3,36 +3,38 @@ const Discord = require('discord.js');
 const bot = new Discord.Client();
 
 const token = process.env.CLIENT_TOKEN;
+const categoryID  = `682051637397028940`
 
 bot.on("ready", function(){
   console.info(`Logged in as ${bot.user.tag}!`);
 });
 
-bot.on("voiceStateUpdate", function(oldMember, newMember){
-	console.log(`starting voice state update`);
+bot.on("voiceStateUpdate", activityHandler);
 
-    if (oldMember.voiceChannel){
-    	updateChannel(oldMember.voiceChannel);
-    }
-    if (newMember.voiceChannel){
-    	updateChannel(newMember.voiceChannel);
-    }
+bot.on("presenceUpdate", activityHandler);
 
-    console.log(`ended voice state update`);
-});
+function makeNewChannel(g) {
+	g.createChannel('New Channel', {type: 'voice', parent: categoryID});
+}
 
-bot.on("presenceUpdate", function(oldMember, newMember){
-	console.log(`starting presence update`);
-
+function activityHandler(oldMember, newMember) {
 	if (oldMember.voiceChannel){
-    	updateChannel(oldMember.voiceChannel);
+		if (oldMember.voiceChannel.members.size === 0) {
+			oldMember.voiceChannel.delete();
+			if (oldMember.guild.channels.filter(c => c.parentID === categoryID).size === 0) {
+				makeNewChannel(oldMember.guild);
+			}
+		} else {
+    		updateChannel(oldMember.voiceChannel);
+    	}
     }
     if (newMember.voiceChannel){
+    	if (newMember.voiceChannel.members.size === 1 && newMember.voiceChannel.name === `New Channel`) {
+    		makeNewChannel(oldMember.guild);
+    	}
     	updateChannel(newMember.voiceChannel);
     }
-
-    console.log(`finished presence update`);
-})
+}
 
 function updateChannel(channel){
 	console.log(`checking the channel ${channel.name}`);
