@@ -42,6 +42,8 @@ function updateChannel(channel){
 	var activeUsers = 0;
 	var gamingUsers = 0
 	var gameFrequency = new Map();
+	console.log("activeUsers = ${activeuUsers}");
+	console.log("gamingUsers = ${gamingUsers}");
 	for (member of channel.members.values()) {
 		var game = member.presence.game;
 		if ( member.selfDeaf || member.serverDeaf) {
