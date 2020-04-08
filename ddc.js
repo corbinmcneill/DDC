@@ -44,15 +44,17 @@ function updateChannel(channel){
 
 	var activeUsers = 0;
 	var activityFrequency = new Map();
-	console.log(`activeUsers = ${activeUsers}`);
 	for (member of channel.members.values()) {
 		if (member.voice.selfDeaf) {
 			continue;
 		}
 
 		activeUsers++;
+		console.log(member);
+		console.log(member.presence);
+		console.log(member.presence.activities);
 
-		if (member.presence && member.presence.activities && member.presence.activities.length === 0 && member.presence.activities[0]) {
+		if (member.presence && member.presence.activities && member.presence.activities.length !== 0 && member.presence.activities[0]) {
 			var activity = member.presence.activities[0].name;
 			if (activityFrequency.has(activity)) {
 				activityFrequency.set(activity, activityFrequency.get(activity)+1);
@@ -63,20 +65,22 @@ function updateChannel(channel){
 		}
 	}
 
+	console.log(`activeUsers = ${activeUsers}`);
 	if (activeUsers === 0) {
 		channel.setName("Nothing");
 		return;
 	}
 
-	for (gameName of activityFrequency.keys()) {
-		console.log(`${gameName} has frequency ${activityFrequency.get(gameName)}`)
+	console.log(activityFrequency);
+	for (activity of activityFrequency.keys()) {
+		console.log(`${activity} has frequency ${activityFrequency.get(activity)}`)
 
-		if (activityFrequency.get(gameName) === gamingUsers) {
-			channel.setName(`${gameName}`);
+		if (activityFrequency.get(activity) === activeUsers) {
+			channel.setName(`${activity}`);
 			return;
 		}
-		else if (activityFrequency.get(gameName) * 2 > gamingUsers) {
-			channel.setName(`Mostly ${gameName}`);
+		else if (activityFrequency.get(activity) * 2 > activeUsers) {
+			channel.setName(`Mostly ${activity}`);
 			return;
 		}
 	}
