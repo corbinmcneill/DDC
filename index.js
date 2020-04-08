@@ -14,7 +14,7 @@ bot.on("voiceStateUpdate", activityHandler);
 bot.on("presenceUpdate", activityHandler);
 
 function makeNewChannel(g) {
-	console.log("Trying to create new channel. categoryID: ${categoryID}")
+	console.log(`Trying to create new channel. categoryID: ${categoryID}`)
 	g.createChannel('New Channel', {type: 'voice', parent: categoryID});
 }
 
@@ -43,8 +43,8 @@ function updateChannel(channel){
 	var activeUsers = 0;
 	var gamingUsers = 0
 	var gameFrequency = new Map();
-	console.log("activeUsers = ${activeuUsers}");
-	console.log("gamingUsers = ${gamingUsers}");
+	console.log(`activeUsers = ${activeuUsers}`);
+	console.log(`gamingUsers = ${gamingUsers}`);
 	for (member of channel.members.values()) {
 		var game = member.presence.game;
 		if ( member.selfDeaf || member.serverDeaf) {
