@@ -14,6 +14,7 @@ bot.on("voiceStateUpdate", activityHandler);
 bot.on("presenceUpdate", activityHandler);
 
 function makeNewChannel(g) {
+	console.log("Trying to create new channel. categoryID: ${categoryID}")
 	g.createChannel('New Channel', {type: 'voice', parent: categoryID});
 }
 
