@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 const bot = new Discord.Client();
 
 const token = process.env.CLIENT_TOKEN;
-const categoryID  = process.env.CATEGORY_ID
+const categoryID  = process.env.CATEGORY_ID;
 
 bot.on("ready", function(){
   console.info(`Logged in as ${bot.user.tag}!`);
