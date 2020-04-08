@@ -3,7 +3,7 @@ const Discord = require('discord.js');
 const bot = new Discord.Client();
 
 const token = process.env.CLIENT_TOKEN;
-const categoryID  = `682051637397028940`
+const categoryID  = process.env.CATEGORY_ID
 
 bot.on("ready", function(){
   console.info(`Logged in as ${bot.user.tag}!`);
@@ -42,6 +42,8 @@ function updateChannel(channel){
 	var activeUsers = 0;
 	var gamingUsers = 0
 	var gameFrequency = new Map();
+	console.log("activeUsers = ${activeuUsers}");
+	console.log("gamingUsers = ${gamingUsers}");
 	for (member of channel.members.values()) {
 		var game = member.presence.game;
 		if ( member.selfDeaf || member.serverDeaf) {
