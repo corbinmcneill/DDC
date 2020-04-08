@@ -46,18 +46,20 @@ function updateChannel(channel){
 	var activityFrequency = new Map();
 	console.log(`activeUsers = ${activeUsers}`);
 	for (member of channel.members.values()) {
-		if (member.presence.activities.length === 0 || member.voice.selfDeaf) {
+		if (member.voice.selfDeaf) {
 			continue;
 		}
 
 		activeUsers++;
 
-		var activity = member.presence.applications[0].name;
-		if (activityFrequency.has(gameName)) {
-			activityFrequency.set(activity, activityFrequency.get(gameName)+1);
-		}
-		else {
-			activityFrequency.set(activity, 1);
+		if (member.presence && member.presence.activities && member.presence.activities.length === 0 && member.presence.activities[0]) {
+			var activity = member.presence.activities[0].name;
+			if (activityFrequency.has(activity)) {
+				activityFrequency.set(activity, activityFrequency.get(activity)+1);
+			}
+			else {
+				activityFrequency.set(activity, 1);
+			}
 		}
 	}
 
