@@ -62,7 +62,7 @@ function presenceHandler(oldPres, newPres) {
 				newPres.member.roles.add(newRole)}
 			else {
 				var roleOpts = {data: {name: newActivity,
-				                   	   color: randomColor({luminosity: 'light'}),
+				                   	   color: randomColor(),
 				                   	   hoist: true,
 				                   	   permissions: 0
 				                  	  }};
