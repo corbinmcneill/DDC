@@ -18,7 +18,7 @@ bot.on("ready", function(){
 
 function makeNewChannel(g) {
 	console.log(`Trying to create new channel. categoryID: ${categoryID}`)
-	g.channels.create('New Channel', {type: 'voice', parent: categoryID});
+	g.channels.create('New Channel', {type: 'voice', bitrate:96000, parent: categoryID});
 }
 
 bot.on("voiceStateUpdate", voiceStateHandler);
