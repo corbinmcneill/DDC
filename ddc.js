@@ -1,6 +1,12 @@
 require('dotenv').config();
+
+const AWS = require('aws-sdk');
+AWS.config.update({region: process.env.AWS_REGION});
+
 const Discord = require('discord.js');
 const bot = new Discord.Client();
+
+const randomColor = require('randomcolor');
 
 const token = process.env.CLIENT_TOKEN;
 const categoryID  = process.env.CATEGORY_ID;
@@ -34,8 +40,35 @@ function voiceStateHandler(oldVS, newVS) {
 
 bot.on("presenceUpdate", presenceHandler);
 function presenceHandler(oldPres, newPres) {
-	if (oldPres && oldPres.member && oldPres.member.voice && oldPres.member.voice.channel){
+	if (newPres && newPres.member && newPres.member.voice.channel){
 		updateChannel(oldPres.member.voice.channel);
+	}
+
+	if(oldPres && oldPres.member && oldPres.activities.length > 0) {
+		var oldActivity = oldPres.activities[0].name;
+		oldPres.guild.roles.fetch().then( roles => {
+			oldRole = roles.cache.find(role => role.name === oldActivity);
+			if (oldRole) {
+				oldPres.member.roles.remove(oldRole);
+			}
+		}).catch(console.error);
+	}
+
+	if (newPres && newPres.member && newPres.activities.length >0 && ( newPres.activities[0].type === "PLAYING" || newPres.activities[0].type === "STREAMING")) {
+		var newActivity = newPres.activities[0].name;
+		newRoleP = oldPres.guild.roles.fetch().then(roles => roles.cache.find(role => role.name === newActivity)).catch(console.error);
+		newRoleP.then( newRole => {
+			if (newRole) {
+				newPres.member.roles.add(newRole)}
+			else {
+				var roleOpts = {data: {name: newActivity,
+				                   	   color: randomColor({luminosity: 'light'}),
+				                   	   hoist: true,
+				                   	   permissions: 0
+				                  	  }};
+				newPres.guild.roles.create(roleOpts).then( newRole => newPres.member.roles.add(newRole).catch(console.error) ).catch(console.error);
+			}
+		}).catch(console.error);
 	}
 }
 
@@ -50,9 +83,6 @@ function updateChannel(channel){
 		}
 
 		activeUsers++;
-		console.log(member);
-		console.log(member.presence);
-		console.log(member.presence.activities);
 
 		if (member.presence && member.presence.activities && member.presence.activities.length !== 0 && member.presence.activities[0]) {
 			var activity = member.presence.activities[0].name;
@@ -71,7 +101,6 @@ function updateChannel(channel){
 		return;
 	}
 
-	console.log(activityFrequency);
 	for (activity of activityFrequency.keys()) {
 		console.log(`${activity} has frequency ${activityFrequency.get(activity)}`)
 
