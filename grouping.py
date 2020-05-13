@@ -49,7 +49,7 @@ async def add_member_to_relevant_group(member, new_activity_name):
     if not member or not new_activity_name:
         return
 
-    relevant_role = discord.utils.find(lambda r: r.name == new_activity_name, member.roles)
+    relevant_role = discord.utils.find(lambda r: r.name == new_activity_name, member.guild.roles)
     if not relevant_role:
         role_color = random.choice(role_colors)
         relevant_role = await member.guild.create_role(name=new_activity_name, color=role_color, hoist=True)
