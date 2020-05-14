@@ -35,9 +35,11 @@ async def check_for_role_deletions(guild):
             await r.delete(reason=group_delete_reason)
 
 
-async def remove_member_from_relevant_group(member, old_activity_name):
-    if not member or not old_activity_name:
+async def remove_member_from_relevant_group(member):
+    if not member or not member.activity:
         return
+
+    old_activity_name = member.activity.name
 
     relevant_role = discord.utils.find(lambda r: r.name == old_activity_name, member.roles)
     if relevant_role:
@@ -45,9 +47,14 @@ async def remove_member_from_relevant_group(member, old_activity_name):
         await check_for_role_deletions(member.guild)
 
 
-async def add_member_to_relevant_group(member, new_activity_name):
-    if not member or not new_activity_name:
+async def add_member_to_relevant_group(member):
+    if not member or not member.activity:
         return
+
+    if member.activity.type != discord.ActivityType.playing and member.activity.type != discord.ActivityType.streaming:
+        return
+
+    new_activity_name = member.activity.name;
 
     relevant_role = discord.utils.find(lambda r: r.name == new_activity_name, member.guild.roles)
     if not relevant_role:
@@ -66,7 +73,7 @@ async def on_member_update(before, after):
 
     if before_activity_name != after_activity_name:
         if before_activity_name:
-            await remove_member_from_relevant_group(before, before_activity_name)
+            await remove_member_from_relevant_group(before)
         if after_activity_name:
-            await add_member_to_relevant_group(after, after_activity_name)
+            await add_member_to_relevant_group(after)
 
