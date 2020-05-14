@@ -113,7 +113,9 @@ def create_channel_name(channel):
             activity_name_frequency[activity_name] = 1
 
     for activity_name in activity_name_frequency:
-        if activity_name_frequency[activity_name] * 2 > num_present_members:
+        if activity_name_frequency[activity_name] == num_present_members:
             return activity_name
+        if activity_name_frequency[activity_name] * 2 > num_present_members:
+            return f"Mostly {activity_name}"
     
     return "Hanging Out"
