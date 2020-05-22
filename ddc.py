@@ -47,7 +47,7 @@ def is_naming(member):
     if not member.activity:
         return False
     if (member.activity.type != discord.ActivityType.playing and 
-            member.activity.type != discord.AcitivityType.streaming):
+            member.activity.type != discord.ActivityType.streaming):
         return False
     return True
 
